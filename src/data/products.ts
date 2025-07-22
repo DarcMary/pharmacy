@@ -54,7 +54,7 @@ export const products: Product[] = [
     category: 'medicamentos',
     brand: 'Losec',
     inStock: true,
-    prescription: false
+    prescription: true
   },
   {
     id: '5',
@@ -64,7 +64,7 @@ export const products: Product[] = [
     image: 'https://cdn1.staticpanvel.com.br/produtos/15/157190-15.jpg?ims=424x',
     category: 'medicamentos',
     brand: 'Claritin',
-    inStock: true,
+    inStock: false,
     prescription: false
   },
   // Cosméticos
@@ -87,8 +87,8 @@ export const products: Product[] = [
     image: 'https://amobeleza.vtexassets.com/arquivos/ids/259584-800-auto?v=638440349126270000&width=800&height=auto&aspect=true',
     category: 'cosmeticos',
     brand: 'Vichy',
-    inStock: true,
-    prescription: false
+    inStock: false,
+    prescription: true
   },
   {
     id: '8',
@@ -99,7 +99,7 @@ export const products: Product[] = [
     category: 'cosmeticos',
     brand: 'Selsun',
     inStock: true,
-    prescription: false
+    prescription: true
   },
   // Vitaminas e Suplementos
   {
@@ -210,7 +210,7 @@ export const products: Product[] = [
     category: 'medicamentos',
     brand: 'Genérico',
     inStock: true,
-    prescription: false
+    prescription: true
   },
   {
     id: '19',
@@ -286,8 +286,8 @@ export const products: Product[] = [
     description: "Limpeza profunda com proteção antibacteriana.",
     category: 'higiene',
     brand: 'higiene',
-    inStock: true,
-    prescription: false
+    inStock: false,
+    prescription: true
   },
   {
     id: '26',
@@ -374,8 +374,8 @@ export const products: Product[] = [
     image: 'https://images.pexels.com/photos/3683041/pexels-photo-3683041.jpeg',
     category: 'cosmeticos',
     brand: 'Nizoral®',
-    inStock: true,
-    prescription: false
+    inStock: false,
+    prescription: true
   },
   {
     id: '34',
@@ -484,8 +484,8 @@ export const products: Product[] = [
     image: 'https://images.pexels.com/photos/3683041/pexels-photo-3683041.jpeg',
     category: 'equipamentos',
     brand: 'Premium®',
-    inStock: true,
-    prescription: false
+    inStock: false,
+    prescription: true
   },
   {
     id: '44',
@@ -584,7 +584,7 @@ export const products: Product[] = [
     category: 'higiene',
     brand: 'Pampers®',
     inStock: true,
-    prescription: false
+    prescription: true
   },
   {
     id: '53',
@@ -594,8 +594,8 @@ export const products: Product[] = [
     image: 'https://images.pexels.com/photos/3683041/pexels-photo-3683041.jpeg',
     category: 'equipamentos',
     brand: 'Multilaser®',
-    inStock: true,
-    prescription: false
+    inStock: false,
+    prescription: true
   },
   {
     id: '54',
@@ -650,7 +650,7 @@ export const products: Product[] = [
     category: 'medicamentos',
     brand: 'Dramamine®',
     inStock: true,
-    prescription: false
+    prescription: true
   },
   {
     id: '59',
@@ -704,7 +704,7 @@ export const products: Product[] = [
     image: 'https://images.pexels.com/photos/3683041/pexels-photo-3683041.jpeg',
     category: 'vitaminas',
     brand: 'Redoxon®',
-    inStock: true,
+    inStock: false,
     prescription: false
   },
   {
@@ -716,7 +716,7 @@ export const products: Product[] = [
     category: 'vitaminas',
     brand: 'Centrum®',
     inStock: true,
-    prescription: false
+    prescription: true
   },
   {
     id: '65',
@@ -825,7 +825,7 @@ export const products: Product[] = [
     image: 'https://images.pexels.com/photos/3683041/pexels-photo-3683041.jpeg',
     category: 'higiene',
     brand: 'Neutrox®',
-    inStock: true,
+    inStock: false,
     prescription: false
   },
   {
@@ -891,7 +891,7 @@ export const products: Product[] = [
     image: 'https://images.pexels.com/photos/3683041/pexels-photo-3683041.jpeg',
     category: 'cosmeticos',
     brand: 'Dermotivin®',
-    inStock: true,
+    inStock: false,
     prescription: false
   },
   {
@@ -946,7 +946,7 @@ export const products: Product[] = [
     image: 'https://images.pexels.com/photos/3683041/pexels-photo-3683041.jpeg',
     category: 'medicamentos',
     brand: 'Nebacetin®',
-    inStock: true,
+    inStock: false,
     prescription: false
   },
   {
@@ -1119,7 +1119,7 @@ export const products: Product[] = [
 // Função para gerar produtos adicionais
 const generateAdditionalProducts = (): Product[] => {
   const additionalProducts: Product[] = [];
-  const categories = ['medicamentos', 'cosmeticos', 'vitaminas', 'higiene', 'equipamentos'];
+  const category = ['medicamentos', 'cosmeticos', 'vitaminas', 'higiene', 'equipamentos'];
   const brands = ['Genérico', 'Bayer', 'Pfizer', 'Novartis', 'Roche', 'Johnson', 'Neutrogena', 'Vichy', 'La Roche-Posay'];
   
   const productTemplates = [

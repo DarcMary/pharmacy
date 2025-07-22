@@ -34,7 +34,7 @@ Uma aplicação moderna de e-commerce para farmácia desenvolvida com React, Typ
 
 ## 🚀 Tecnologias Utilizadas
 
-- **React 18** - Biblioteca principal
+- **React** - Biblioteca principal
 - **TypeScript** - Tipagem estática
 - **React Router DOM** - Roteamento
 - **Tailwind CSS** - Estilização
@@ -186,36 +186,8 @@ A aplicação está configurada para deploy automático no Netlify:
 npm run build
 ```
 
-O build será gerado na pasta `dist/` e pode ser deployado em qualquer servidor estático.
-
-**URL de Produção**: https://majestic-puppy-342d6e.netlify.app
-
-## 🤝 Contribuição
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
-
 ## 👥 Autor
 
 Desenvolvido com ❤️ para demonstrar as melhores práticas em desenvolvimento React.
 
 ---
-
-## 📞 Suporte
-
-Para dúvidas ou sugestões, entre em contato:
-
-- 📧 Email: suporte@farmasaude.com.br
-- 📱 WhatsApp: (11) 99999-9999
-- 🌐 Site: https://farmasaude.com.br
-
----
-
-**FarmaSaúde** - Sua farmácia online de confiança! 🏥✨

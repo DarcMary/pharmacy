@@ -7,6 +7,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterCustomerPage } from './pages/RegisterCustomerPage';
+import { RegisterSellerPage } from './pages/RegisterSellerPage';
 import PrivateRoute from './components/PrivateRoute';
 import { WelcomePage } from './pages/WelcomePage';
 
@@ -26,6 +27,11 @@ function App() {
               } />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterCustomerPage />} />
+              <Route path="/register-seller" element={
+                <PrivateRoute allowedRoles={['seller']}>
+                  <RegisterSellerPage />
+                </PrivateRoute>
+              } />
               <Route path="/product/:id" element={
                 <PrivateRoute>
                   <ProductDetailPage />

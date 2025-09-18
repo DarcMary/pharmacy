@@ -12,7 +12,7 @@ export const LoginPage = () => {
     e.preventDefault();
     try {
       await login({ email, password });
-      navigate('/');
+      navigate('/products');
     } catch (error) {
       console.error('Erro no login:', error);
     }

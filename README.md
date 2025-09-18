@@ -79,8 +79,8 @@ Senha: admin123
 
 1. **Clone o repositório**
 ```bash
-git clone <url-do-repositorio>
-cd farmasaude
+git clone (https://github.com/DarcMary/pharmacy.git)
+cd pharmacy
 ```
 
 2. **Instale as dependências**
@@ -103,14 +103,10 @@ http://localhost:5173
 ```bash
 # Frontend (na pasta frontend)
 npm run dev      # Inicia o servidor de desenvolvimento
-npm run build    # Build para produção
-npm run preview  # Preview da build
-npm run lint     # Linting
 
 # Backend (na pasta backend)
 npm run dev      # Inicia o servidor de desenvolvimento
-npm run build    # Compila TypeScript
-npm start        # Inicia o servidor em produção
+
 ```
 
 ## 🏗️ Estrutura do Projeto
@@ -225,16 +221,6 @@ A aplicação conta com mais de 100 produtos distribuídos nas seguintes categor
 - **Breakpoints Tailwind**: sm, md, lg, xl
 - **Grid responsivo** para produtos
 - **Menu adaptativo** para mobile
-
-## 🚀 Deploy
-
-A aplicação está configurada para deploy automático no Netlify:
-
-```bash
-npm run build
-```
-
-## 👥 Autor
 
 Desenvolvido com ❤️ para demonstrar as melhores práticas em desenvolvimento React.
 

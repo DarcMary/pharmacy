@@ -1,4 +1,4 @@
-🏥### 🌟 Funcionalidades
+### 🌟 Funcionalidades
 
 ### 👤 Sistema de Autenticação
 - **Múltiplos Perfis**: Clientes e Vendedores

@@ -1,4 +1,15 @@
-# 🏥 FarmaSaúde - E-commerce de Farmácia
+# 🏥### 🌟 Funcionalidades
+
+### 👤 Sistema de Autenticação
+- **Múltiplos Perfis**: Clientes e Vendedores
+- **Registro de Cliente**: Criação de conta simplificada
+- **Registro de Vendedor**: Apenas vendedores podem registrar outros vendedores
+- **Login Seguro**: Sistema de autenticação com JWT
+- **Rotas Protegidas**: Acesso controlado baseado em perfil
+- **Persistência**: Login mantido entre sessões
+- **Interface Adaptativa**: Menus e opções específicas por perfil
+
+### 🛍️ Catálogo de ProdutosrmaSaúde - E-commerce de Farmácia
 
 Uma aplicação moderna de e-commerce para farmácia desenvolvida com React, TypeScript e Tailwind CSS. O sistema oferece uma experiência completa de compra online com mais de 100 produtos farmacêuticos, cosméticos e suplementos.
 
@@ -34,19 +45,35 @@ Uma aplicação moderna de e-commerce para farmácia desenvolvida com React, Typ
 
 ## 🚀 Tecnologias Utilizadas
 
+### Frontend
 - **React** - Biblioteca principal
 - **TypeScript** - Tipagem estática
-- **React Router DOM** - Roteamento
-- **Tailwind CSS** - Estilização
-- **Lucide React** - Ícones
+- **React Router DOM** - Roteamento e proteção de rotas
+- **Tailwind CSS** - Estilização responsiva
+- **Lucide React** - Ícones modernos
 - **Vite** - Build tool e dev server
-- **Context API** - Gerenciamento de estado
+- **Context API** - Gerenciamento de estado global
+
+### Backend
+- **Node.js** - Runtime JavaScript
+- **Express** - Framework web
+- **TypeScript** - Tipagem estática
+- **JWT** - Autenticação e autorização
+- **bcrypt** - Criptografia de senhas
 
 ## 📦 Instalação e Execução
 
 ### Pré-requisitos
 - Node.js (versão 16 ou superior)
 - npm ou yarn
+- Git
+
+### Credenciais de Teste
+```
+Vendedor Admin:
+Email: admin@farmasaude.com
+Senha: admin123
+```
 
 ### Passos para instalação
 
@@ -74,37 +101,58 @@ http://localhost:5173
 ### Scripts disponíveis
 
 ```bash
-# Desenvolvimento
-npm run dev
+# Frontend (na pasta frontend)
+npm run dev      # Inicia o servidor de desenvolvimento
+npm run build    # Build para produção
+npm run preview  # Preview da build
+npm run lint     # Linting
 
-# Build para produção
-npm run build
-
-# Preview da build
-npm run preview
-
-# Linting
-npm run lint
+# Backend (na pasta backend)
+npm run dev      # Inicia o servidor de desenvolvimento
+npm run build    # Compila TypeScript
+npm start        # Inicia o servidor em produção
 ```
 
 ## 🏗️ Estrutura do Projeto
 
 ```
-src/
-├── components/          # Componentes reutilizáveis
-│   ├── Header.tsx      # Cabeçalho com navegação
-│   └── ProductCard.tsx # Card de produto
-├── contexts/           # Contextos React
-│   └── CartContext.tsx # Gerenciamento do carrinho
-├── data/              # Dados estáticos
-│   └── products.ts    # Base de produtos
-├── pages/             # Páginas da aplicação
-│   ├── HomePage.tsx   # Página inicial
-│   ├── ProductDetailPage.tsx # Detalhes do produto
-│   └── CartPage.tsx   # Carrinho de compras
-├── App.tsx            # Componente principal
-├── main.tsx          # Ponto de entrada
-└── index.css         # Estilos globais
+frontend/
+└── src/
+    ├── components/          # Componentes reutilizáveis
+    │   ├── Header.tsx      # Cabeçalho com navegação
+    │   ├── ProductCard.tsx # Card de produto
+    │   └── PrivateRoute.tsx # Proteção de rotas
+    ├── contexts/           # Contextos React
+    │   ├── CartContext.tsx # Gerenciamento do carrinho
+    │   └── AuthContext.tsx # Autenticação e autorização
+    ├── data/              # Dados estáticos
+    │   └── products.ts    # Base de produtos
+    ├── pages/             # Páginas da aplicação
+    │   ├── HomePage.tsx   # Página de produtos
+    │   ├── WelcomePage.tsx # Página inicial
+    │   ├── LoginPage.tsx  # Login de usuários
+    │   ├── RegisterCustomerPage.tsx # Registro de clientes
+    │   ├── RegisterSellerPage.tsx # Registro de vendedores
+    │   ├── ProductDetailPage.tsx # Detalhes do produto
+    │   └── CartPage.tsx   # Carrinho de compras
+    ├── types/            # Definições de tipos
+    │   └── auth.ts      # Tipos de autenticação
+    ├── App.tsx          # Componente principal
+    ├── main.tsx        # Ponto de entrada
+    └── index.css       # Estilos globais
+
+backend/
+└── src/
+    ├── controllers/    # Controladores da API
+    │   └── AuthController.ts # Autenticação
+    ├── middlewares/   # Middlewares Express
+    │   ├── auth.ts    # Autenticação JWT
+    │   └── sellerAuth.ts # Autorização de vendedor
+    ├── types/        # Definições de tipos
+    │   └── auth.ts   # Tipos de autenticação
+    ├── utils/        # Utilitários
+    │   └── jwt.ts    # Geração de tokens
+    └── index.ts      # Ponto de entrada
 ```
 
 ## 🛍️ Produtos Disponíveis

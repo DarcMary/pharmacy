@@ -9,19 +9,46 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     return res.status(401).json({ error: 'Token não fornecido' });
   }
 
-  const token = authorization.replace('Bearer', '').trim();
+  const token = authorization.replace('Bearer ', '').trim();
 
+  // O bloco try...catch DEVE começar AQUI, dentro da função. ✅
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret') as JwtPayload;
-    req.user = decoded;
-    return next();
-  } catch {
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      console.error('Erro crítico: JWT_SECRET não está definido.');
+      return res.status(500).json({ error: 'Erro interno do servidor.' });
+    }
+    console.log("Authorization header:", authorization);
+    console.log("Token após limpeza:", token);
+    console.log("JWT_SECRET usado:", jwtSecret);
+    
+    try {
+      const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+      console.log("Token decodificado com sucesso:", decoded);
+      req.user = decoded;
+      return next();
+    } catch (error) {
+      if (error instanceof jwt.JsonWebTokenError) {
+        console.error("Erro específico do JWT:", {
+          name: error.name,
+          message: error.message
+        });
+      }
+      throw error;
+    }
+  } catch (err) {
+    console.log(err)
+    if (err instanceof Error)       {
+      console.error('Falha na verificação do token:', err.message);
+    } else {
+      console.error('Falha na verificação do token:', err);
+    }
     return res.status(401).json({ error: 'Token inválido' });
   }
-}
+} // <- A função authMiddleware termina aqui.
 
 export function sellerMiddleware(req: Request, res: Response, next: NextFunction) {
-  if (!req.user || req.user.role !== 'seller') {
+  if (!req.user || req.user.role.toLowerCase() !== 'seller') {
     return res.status(403).json({ error: 'Acesso negado. Apenas vendedores podem acessar este recurso.' });
   }
   return next();

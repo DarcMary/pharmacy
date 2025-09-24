@@ -16,10 +16,7 @@ export const generateToken = (user: User): string => {
     role: user.role
   };
 
-  console.log('Gerando token com JWT_SECRET:', JWT_SECRET);
-  console.log('Payload:', payload);
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
-  console.log('Token gerado:', token);
   return token;
 };
 

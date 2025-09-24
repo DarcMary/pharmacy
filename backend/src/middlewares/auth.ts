@@ -18,13 +18,8 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
       console.error('Erro crítico: JWT_SECRET não está definido.');
       return res.status(500).json({ error: 'Erro interno do servidor.' });
     }
-    console.log("Authorization header:", authorization);
-    console.log("Token após limpeza:", token);
-    console.log("JWT_SECRET usado:", jwtSecret);
-    
     try {
       const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
-      console.log("Token decodificado com sucesso:", decoded);
       req.user = decoded;
       return next();
     } catch (error) {
@@ -37,8 +32,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
       throw error;
     }
   } catch (err) {
-    console.log(err)
-    if (err instanceof Error)       {
+    if (err instanceof Error) {
       console.error('Falha na verificação do token:', err.message);
     } else {
       console.error('Falha na verificação do token:', err);

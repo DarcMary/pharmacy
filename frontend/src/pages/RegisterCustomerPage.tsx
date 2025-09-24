@@ -23,10 +23,17 @@ export const RegisterCustomerPage = () => {
     }));
   };
 
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
+
     if (formData.password !== formData.confirmPassword) {
-      alert('As senhas não coincidem');
+      setError('As senhas não coincidem');
+      setLoading(false);
       return;
     }
 
@@ -35,8 +42,12 @@ export const RegisterCustomerPage = () => {
       const { password, name, email, cpf, phone, birthDate } = formData;
       await registerCustomer({ password, name, email, cpf, phone, birthDate });
       navigate('/');
-    } catch (error) {
-      console.error('Erro no registro:', error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Erro ao criar conta');
+      console.error('Erro no registro:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,6 +60,11 @@ export const RegisterCustomerPage = () => {
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-400 p-4">
+              <p className="text-red-700">{error}</p>
+            </div>
+          )}
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
               Nome
@@ -152,9 +168,10 @@ export const RegisterCustomerPage = () => {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={loading}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
             >
-              Registrar
+              {loading ? 'Registrando...' : 'Registrar'}
             </button>
           </div>
         </form>

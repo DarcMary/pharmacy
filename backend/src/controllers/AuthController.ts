@@ -2,6 +2,7 @@ import type { Request, Response } from 'express-serve-static-core';
 import { User, LoginCredentials, CustomerRegistration, SellerRegistration } from '../types/models';
 import { generateToken } from '../utils/jwt';
 import bcrypt from 'bcrypt';
+import prisma from '../lib/prisma';
 
 export class AuthController {
   // Usando arrow functions para manter o contexto do this
@@ -9,17 +10,40 @@ export class AuthController {
     try {
       const { email, password }: LoginCredentials = req.body;
 
-      // TODO: Implementar lógica de verificação de usuário no banco de dados
-      const user: User = {
-        id: '1',
-        email,
-        name: 'Test User',
-        role: 'customer'
-      };
-      const token = generateToken(user);
+      // Busca o usuário pelo email
+      const user = await prisma.user.findUnique({
+        where: { email }
+      });
 
-      return res.json({ user, token });
+      if (!user) {
+        return res.status(401).json({ error: 'Email ou senha incorretos' });
+      }
+
+      // Verifica a senha
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (!validPassword) {
+        return res.status(401).json({ error: 'Email ou senha incorretos' });
+      }
+
+      const token = generateToken({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role.toLowerCase() as 'customer' | 'seller'
+      });
+
+      // Remove a senha do objeto de retorno
+      const { password: _, ...userWithoutPassword } = user;
+
+      return res.json({ 
+        user: {
+          ...userWithoutPassword,
+          role: user.role.toLowerCase()
+        }, 
+        token 
+      });
     } catch (error) {
+      console.error('Erro no login:', error);
       return res.status(400).json({ error: 'Falha no login' });
     }
   };
@@ -28,18 +52,45 @@ export class AuthController {
     try {
       const data: CustomerRegistration = req.body;
 
-      // TODO: Implementar lógica de criação de usuário no banco de dados
-      const hashedPassword = await bcrypt.hash(data.password, 10);
-      const user: User = {
-        id: '2',
-        email: data.email,
-        name: data.name,
-        role: 'customer'
-      };
-      const token = generateToken(user);
+      // Verifica se já existe um usuário com o mesmo email
+      const existingUser = await prisma.user.findUnique({
+        where: { email: data.email }
+      });
 
-      return res.status(201).json({ user, token });
+      if (existingUser) {
+        return res.status(400).json({ error: 'Email já cadastrado' });
+      }
+
+      // Cria novo usuário
+      const hashedPassword = await bcrypt.hash(data.password, 10);
+      const user = await prisma.user.create({
+        data: {
+          email: data.email,
+          name: data.name,
+          password: hashedPassword,
+          role: 'CUSTOMER'
+        }
+      });
+
+      const token = generateToken({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role.toLowerCase() as 'customer' | 'seller'
+      });
+
+      // Remove a senha do objeto de retorno
+      const { password, ...userWithoutPassword } = user;
+
+      return res.status(201).json({ 
+        user: {
+          ...userWithoutPassword,
+          role: user.role.toLowerCase()
+        }, 
+        token 
+      });
     } catch (error) {
+      console.error('Erro ao registrar cliente:', error);
       return res.status(400).json({ error: 'Falha no registro' });
     }
   };
@@ -53,19 +104,46 @@ export class AuthController {
         return res.status(403).json({ error: 'Não autorizado' });
       }
 
-      // TODO: Implementar lógica de criação de vendedor no banco de dados
-      const hashedPassword = await bcrypt.hash(data.password, 10);
-      const user: User = {
-        id: '3',
-        email: data.email,
-        name: data.name,
-        role: 'seller',
-        createdBy: currentUser.id
-      };
-      const token = generateToken(user);
+      // Verifica se já existe um usuário com o mesmo email
+      const existingUser = await prisma.user.findUnique({
+        where: { email: data.email }
+      });
 
-      return res.status(201).json({ user, token });
+      if (existingUser) {
+        return res.status(400).json({ error: 'Email já cadastrado' });
+      }
+
+      // Cria novo vendedor
+      const hashedPassword = await bcrypt.hash(data.password, 10);
+      const user = await prisma.user.create({
+        data: {
+          email: data.email,
+          name: data.name,
+          password: hashedPassword,
+          role: 'SELLER',
+          createdBy: currentUser.id
+        }
+      });
+
+      const token = generateToken({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role.toLowerCase() as 'customer' | 'seller'
+      });
+
+      // Remove a senha do objeto de retorno
+      const { password, ...userWithoutPassword } = user;
+
+      return res.status(201).json({ 
+        user: {
+          ...userWithoutPassword,
+          role: user.role.toLowerCase()
+        }, 
+        token 
+      });
     } catch (error) {
+      console.error('Erro ao registrar vendedor:', error);
       return res.status(400).json({ error: 'Falha no registro do vendedor' });
     }
   };

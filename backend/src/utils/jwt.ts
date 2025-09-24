@@ -1,7 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { User, JwtPayload } from '../types/models';
+import dotenv from 'dotenv';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'seu-segredo-aqui';
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET não está definido no ambiente');
+}
 
 export const generateToken = (user: User): string => {
   const payload: JwtPayload = {
@@ -10,7 +16,8 @@ export const generateToken = (user: User): string => {
     role: user.role
   };
 
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
+  return token;
 };
 
 export const verifyToken = (token: string): JwtPayload => {

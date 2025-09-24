@@ -6,73 +6,7 @@ import {
   CustomerRegistration,
   SellerRegistration
 } from '../types/auth';
-
-// Temporário: será substituído pela chamada à API
-const mockUsers: User[] = [
-  {
-    id: '1',
-    email: 'admin@farmasaude.com',
-    name: 'Admin',
-    role: 'seller',
-  }
-];
-
-const mockAuthAPI = {
-  login: async (credentials: LoginCredentials) => {
-    // Simulação de chamada à API
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const user = mockUsers.find(u => u.email === credentials.email);
-    if (!user) {
-      throw new Error('Usuário não encontrado');
-    }
-    
-    return {
-      user,
-      token: 'mock-jwt-token'
-    };
-  },
-  
-  registerCustomer: async (data: CustomerRegistration) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    if (mockUsers.some(u => u.email === data.email)) {
-      throw new Error('Email já cadastrado');
-    }
-    
-    const newUser: User = {
-      id: String(mockUsers.length + 1),
-      email: data.email,
-      name: data.name,
-      role: 'customer',
-    };
-    
-    mockUsers.push(newUser);
-    return { user: newUser, token: 'mock-jwt-token' };
-  },
-  
-  registerSeller: async (data: SellerRegistration, currentUser?: User) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    if (!currentUser || currentUser.role !== 'seller') {
-      throw new Error('Apenas vendedores podem cadastrar outros vendedores');
-    }
-    
-    if (mockUsers.some(u => u.email === data.email)) {
-      throw new Error('Email já cadastrado');
-    }
-    
-    const newUser: User = {
-      id: String(mockUsers.length + 1),
-      email: data.email,
-      name: data.name,
-      role: 'seller',
-    };
-    
-    mockUsers.push(newUser);
-    return { user: newUser, token: 'mock-jwt-token' };
-  }
-};
+import * as authService from '../services/auth';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -98,7 +32,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = useCallback(async (credentials: LoginCredentials) => {
     try {
       setLoading(true);
-      const response = await mockAuthAPI.login(credentials);
+      const response = await authService.login(credentials);
       
       localStorage.setItem('@FarmaSaude:user', JSON.stringify(response.user));
       localStorage.setItem('@FarmaSaude:token', response.token);
@@ -118,7 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const registerCustomer = useCallback(async (data: CustomerRegistration) => {
     try {
       setLoading(true);
-      const response = await mockAuthAPI.registerCustomer(data);
+      const response = await authService.registerCustomer(data);
       
       localStorage.setItem('@FarmaSaude:user', JSON.stringify(response.user));
       localStorage.setItem('@FarmaSaude:token', response.token);
@@ -135,7 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (!user) {
         throw new Error('Usuário não autenticado');
       }
-      await mockAuthAPI.registerSeller(data, user);
+      await authService.registerSeller(data);
     } finally {
       setLoading(false);
     }

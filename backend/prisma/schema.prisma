@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  cpf       String?  // CPF do usuário
+  phone     String?  // Telefone do usuário
+  birthDate DateTime? // Data de nascimento
+  role      Role     @default(CUSTOMER)
+  createdBy String?  // ID do vendedor que criou (apenas para vendedores)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Auto-relacionamento para rastrear quem criou o usuário (apenas para vendedores)
+  creator        User?     @relation("CreatedUsers", fields: [createdBy], references: [id])
+  created        User[]    @relation("CreatedUsers")
+  
+  // Relacionamentos com produtos e pedidos
+  createdProducts Product[] @relation("CreatedProducts")
+  customerOrders  Order[]   @relation("CustomerOrders")
+  sellerOrders    Order[]   @relation("SellerOrders")
+
+  @@map("users")
+}
+
+enum Role {
+  CUSTOMER
+  SELLER
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  images      String[] // Array de URLs das imagens
+  category    String
+  brand       String
+  inStock     Boolean  @default(true)
+  quantity    Int      @default(0) // Quantidade em estoque
+  prescription Boolean @default(false)
+  createdBy   String   // ID do vendedor que criou
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  creator     User        @relation("CreatedProducts", fields: [createdBy], references: [id])
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  customerId String
+  sellerId   String?     // Vendedor que processou o pedido
+  total      Float
+  status     OrderStatus @default(PENDING)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  // Relacionamentos
+  customer   User        @relation("CustomerOrders", fields: [customerId], references: [id])
+  seller     User?       @relation("SellerOrders", fields: [sellerId], references: [id])
+  items      OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float  // Preço no momento da compra
+
+  // Relacionamentos
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}

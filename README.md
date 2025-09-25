@@ -1,53 +1,184 @@
-### 🌟 Funcionalidades
+# � Sistema de Farmácia - E-commerce Completo
 
-### 👤 Sistema de Autenticação
-- **Múltiplos Perfis**: Clientes e Vendedores
-- **Registro de Cliente**: Criação de conta simplificada
-- **Registro de Vendedor**: Apenas vendedores podem registrar outros vendedores
-- **Login Seguro**: Sistema de autenticação com JWT
-- **Rotas Protegidas**: Acesso controlado baseado em perfil
-- **Persistência**: Login mantido entre sessões
-- **Interface Adaptativa**: Menus e opções específicas por perfil
+Sistema completo de e-commerce para farmácia desenvolvido com **React + TypeScript** no frontend e **Node.js + Express + Prisma** no backend.
 
-### 🛍️ Catálogo de ProdutosrmaSaúde - E-commerce de Farmácia
+## 🚀 Funcionalidades
 
-Uma aplicação moderna de e-commerce para farmácia desenvolvida com React, TypeScript e Tailwind CSS. O sistema oferece uma experiência completa de compra online com mais de 100 produtos farmacêuticos, cosméticos e suplementos.
+### � **Sistema de Autenticação**
+- ✅ Login e registro para clientes e vendedores  
+- ✅ Autenticação JWT com roles (CUSTOMER/SELLER)
+- ✅ Cadastro completo (CPF, telefone, aniversário)
 
-## 🌟 Funcionalidades
+### 🛍️ **Para Clientes**
+- ✅ Catálogo de produtos por categorias
+- ✅ Busca inteligente por nome/descrição/marca
+- ✅ Carrinho de compras com validação de estoque
+- ✅ Checkout completo com histórico de pedidos
+- ✅ Interface responsiva (grid/lista)
 
-### 🛍️ Catálogo de Produtos
-- **Mais de 100 produtos** organizados por categorias
-- **Categorias disponíveis**: Medicamentos, Cosméticos, Vitaminas, Higiene, Equipamentos
-- **Filtros avançados** por categoria e preço
-- **Sistema de busca** integrado
-- **Indicadores visuais** para produtos que necessitam receita médica
-- **Status de estoque** em tempo real
+### 🏪 **Para Vendedores**
+- ✅ Dashboard com estatísticas de vendas
+- ✅ CRUD completo de produtos com upload de imagens
+- ✅ Gerenciamento de estoque em tempo real
+- ✅ Visualização de vendas realizadas
 
-### 🛒 Carrinho de Compras
-- **Adicionar/remover produtos** com facilidade
-- **Controle de quantidade** individual por produto
-- **Cálculo automático** do valor total
-- **Frete grátis** para compras acima de R$ 50,00
-- **Persistência** do carrinho durante a sessão
-- **Finalização de compra** com feedback visual
+### 🎨 **Interface**
+- ✅ Design moderno com Tailwind CSS
+- ✅ Responsivo para mobile e desktop
+- ✅ Navegação intuitiva por categorias
+- ✅ Feedback visual para todas as ações
 
-### 📱 Interface Responsiva
-- **Design moderno** com tema farmácia (verde)
-- **Totalmente responsivo** para desktop, tablet e mobile
-- **Micro-interações** e animações suaves
-- **Estados de hover** e feedback visual
-- **Navegação intuitiva** entre páginas
+## 🏗️ Arquitetura
 
-### 🔄 Roteamento Dinâmico
-- **Página Inicial**: Catálogo completo com filtros
-- **Detalhes do Produto**: Informações completas e opções de compra
-- **Carrinho**: Gerenciamento de itens e finalização
+```
+pharmacy/
+├── frontend/          # React + TypeScript + Vite
+├── backend/           # Node.js + Express + Prisma
+├── vercel.json        # Configuração do Vercel
+└── README.md
+```
 
-## 🚀 Tecnologias Utilizadas
+## ⚙️ Como Rodar o Projeto
 
-### Frontend
-- **React** - Biblioteca principal
-- **TypeScript** - Tipagem estática
+### 📋 **Pré-requisitos**
+- Node.js 18+ 
+- PostgreSQL
+- npm ou yarn
+
+### 🔧 **1. Clone o Repositório**
+```bash
+git clone https://github.com/Douglasffjw/pharmacy.git
+cd pharmacy
+```
+
+### 🗄️ **2. Configure o Banco de Dados**
+
+1. **Instale o PostgreSQL** (se não tiver)
+2. **Crie um banco de dados:**
+   ```sql
+   CREATE DATABASE pharmacy_db;
+   ```
+
+3. **Configure as variáveis de ambiente:**
+   ```bash
+   cd backend
+   cp .env.example .env
+   ```
+
+4. **Edite o arquivo `.env`:**
+   ```env
+   DATABASE_URL="postgresql://usuario:senha@localhost:5432/pharmacy_db"
+   JWT_SECRET="seu_jwt_secret_super_seguro"
+   ```
+
+### 🔨 **3. Setup do Backend**
+```bash
+cd backend
+
+# Instalar dependências
+npm install
+
+# Rodar migrações do banco
+npx prisma migrate dev
+
+# Popular banco com dados de teste (opcional)
+npm run seed
+
+# Iniciar servidor de desenvolvimento
+npm run dev
+```
+
+**✅ Backend rodando em:** `http://localhost:3001`
+
+### 🎨 **4. Setup do Frontend**
+```bash
+# Em outro terminal
+cd frontend
+
+# Instalar dependências  
+npm install
+
+# Iniciar servidor de desenvolvimento
+npm run dev
+```
+
+**✅ Frontend rodando em:** `http://localhost:5173`
+
+## 🧪 **Dados de Teste**
+
+Após rodar `npm run seed`, você terá:
+
+### 🔑 **Credenciais de Login:**
+- **Admin/Vendedor**: `admin@farmasaude.com` / `admin123`
+- **Cliente**: `cliente@exemplo.com` / `123456`
+
+### 📦 **Produtos de Exemplo:**
+- 10 produtos em diferentes categorias
+- Medicamentos, Cosméticos, Higiene, etc.
+- Com imagens e preços definidos
+
+## 🚀 Deploy
+
+### **Frontend (Vercel)**
+O arquivo `vercel.json` já está configurado:
+```bash
+# Deploy automático ao fazer push para main
+git push origin main
+```
+
+### **Backend (Railway/Render/Heroku)**
+Configure as mesmas variáveis de ambiente:
+- `DATABASE_URL`
+- `JWT_SECRET`
+
+## 📚 **Tecnologias Utilizadas**
+
+### **Frontend:**
+- React 18 + TypeScript
+- Vite (build tool)
+- Tailwind CSS (estilização)
+- React Router (roteamento)
+- Axios (HTTP client)
+- Lucide React (ícones)
+
+### **Backend:**
+- Node.js + Express
+- TypeScript
+- Prisma ORM
+- PostgreSQL
+- JWT (autenticação)
+- bcrypt (hash de senhas)
+- Multer (upload de arquivos)
+
+## �️ **Scripts Disponíveis**
+
+### **Backend (`/backend`)**
+```bash
+npm run dev          # Servidor de desenvolvimento
+npm run build        # Build para produção
+npm run start        # Iniciar servidor de produção
+npm run seed         # Popular banco com dados de teste
+```
+
+### **Frontend (`/frontend`)**
+```bash
+npm run dev          # Servidor de desenvolvimento
+npm run build        # Build para produção
+npm run preview      # Visualizar build localmente
+```
+
+## 🔐 **Variáveis de Ambiente**
+
+### **Backend (`.env`)**
+```env
+DATABASE_URL="postgresql://usuario:senha@localhost:5432/pharmacy_db"
+JWT_SECRET="seu_jwt_secret_muito_seguro_aqui"
+```
+
+### **Frontend** (opcional)
+```env
+VITE_API_URL="http://localhost:3001"  # URL da API
+```
 - **React Router DOM** - Roteamento e proteção de rotas
 - **Tailwind CSS** - Estilização responsiva
 - **Lucide React** - Ícones modernos
